@@ -1,0 +1,9 @@
+---
+- name: Deploy LAMP 
+  hosts: all
+  become: True
+  roles:
+    - update_os
+    - apache
+    - { role: mariadb, version_MariaDB: 11.5 }
+    - { role: php, php_version: 8.3 }
