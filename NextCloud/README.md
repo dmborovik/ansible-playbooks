@@ -17,6 +17,7 @@
 ----------
 
 - nextcloud_version: версия NextCloud.
+- php_module: Модули PHP, необходимые для работы приложения
 
 Роли
 ----

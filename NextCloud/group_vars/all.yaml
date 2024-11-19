@@ -1,1 +1,10 @@
 nextcloud_version: 30.0.0
+
+php_module:
+  - php-mysql
+  - php-fpm
+  - php-intl
+  - php-bcmath
+  - php-gmp 
+  - php-zip
+  - php-gd
