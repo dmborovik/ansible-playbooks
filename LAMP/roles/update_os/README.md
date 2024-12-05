@@ -7,6 +7,7 @@ update_os
 ------------
 
 - Almalinux 9
+- ArchLinux
 
 Пример плэйбука
 ----------------
