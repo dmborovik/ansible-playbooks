@@ -1,0 +1,9 @@
+---
+- name: Deploy LEMP 
+  hosts: all
+  become: True
+  roles:
+    - update_os
+    - nginx
+    - mariadb
+    - php

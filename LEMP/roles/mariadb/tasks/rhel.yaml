@@ -1,0 +1,24 @@
+---
+- name: add MariaDB repository
+  yum_repository:
+    name: MariaDB
+    description: MariaDB repository
+    file: MariaDB
+    baseurl: https://rpm.mariadb.org/{{ version_MariaDB }}/centos/$releasever/$basearch
+    gpgkey: https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
+    gpgcheck: yes
+    module_hotfixes: 1 # Need for AlmaLinux 8
+
+- name: Install MariaDB
+  dnf:
+    name:
+      - MariaDB-server
+      - MariaDB-client
+    state: latest
+    update_cache: yes
+
+- name: Install extension
+  dnf:
+    name:
+      - python3-PyMySQL
+    state: present
