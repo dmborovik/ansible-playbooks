@@ -6,7 +6,7 @@
     - update_os
     - apache
     - { role: php, php_version: 8.3, php_modules: "{{ php_module }}", php_memory_limit: 512M  } 
-    - { role: mariadb, version_MariaDB: 11.5, secure_install: False, create_db: True, create_user: True, db_name: nextcloud_db, db_user: nextcloud_user}
+    - { role: mariadb, version_MariaDB: 11.6, secure_install: False, create_db: True, create_user: True, db_name: nextcloud_db, db_user: nextcloud_user}
 
   tasks:
 
