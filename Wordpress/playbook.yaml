@@ -1,0 +1,76 @@
+---
+
+- name: Deploy Wordpress
+  hosts: all
+  become: true
+  roles:
+    - update_os
+    - { role: openlitespeed, listener_port: 80 }
+    - { role: mariadb, secure_install: False, create_db: True, create_user: True }
+    - { role: lsphp, lsphp_version: 83, lsphp_modules: "{{ lsphp_module }}" }
+  
+  tasks:
+
+    - name: Download Wordpress
+      get_url:
+        url: "https://wordpress.org/latest.zip"
+        dest: "/tmp/wordpress.zip"
+      register: download
+
+##########Install Wordpress#############
+    - name: Set Wordpress
+      block:
+
+        - name: Unzip Wordpress
+          unarchive:
+            src: "/tmp/wordpress.zip"
+            dest: "{{ work_dir }}"
+            remote_src: yes
+            owner: "{{ server_owner }}"
+            group: "{{ server_group }}"
+
+        - name: set wp-config
+          template:
+            src: wp-config.php
+            dest: "{{ work_dir }}/wordpress/wp-config.php"
+            owner: "{{ server_owner }}"
+            group: "{{ server_group }}"
+      
+      # when: download is changed
+
+########Config OpenLiteSpeed########    
+    - name: Set OpenLiteSpeed
+      block:
+        - name: Set Document Root 
+          lineinfile:
+            path: /usr/local/lsws/conf/vhosts/Example/vhconf.conf
+            regexp: '^docRoot'
+            line: 'docRoot $VH_ROOT/html/wordpress'
+
+        - name: Set Index Files
+          lineinfile:
+            path: /usr/local/lsws/conf/vhosts/Example/vhconf.conf 
+            regexp: '^  indexFiles'
+            line: '  indexFiles index.html,index.php'
+
+        - name: Restart OpenLiteSpeed
+          service:
+            name: lshttpd
+            state: restarted
+
+####Set multisite#####
+    - name: Set multisite
+      block:
+
+        - name: set .htaccess
+          template:
+            src: .htaccess
+            dest: "{{ work_dir }}/wordpress/.htaccess"
+            owner: "{{ server_owner }}"
+            group: "{{ server_group }}"
+      
+      when: multisite == 'True'
+
+    
+
+  

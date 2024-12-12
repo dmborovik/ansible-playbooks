@@ -1,0 +1,12 @@
+lsphp_module:
+  - mysql
+  - common
+  - curl
+  - imagick
+
+work_dir: /usr/local/lsws/Example/html/
+
+server_owner: nobody
+server_group: nogroup
+
+multisite: True
