@@ -10,4 +10,6 @@
 
 - [NextCloud](./NextCloud/) - Установка сервера NextCloud
 
-- [Wordpress](./Wordpress/) - Установка Wordpress
+- [Wordpress](./Wordpress/) - Установка CMS Wordpress
+
+- [Joomla](./Joomla/) - Установка CMS Joomla
