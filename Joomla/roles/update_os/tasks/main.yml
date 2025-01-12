@@ -1,0 +1,13 @@
+---
+# tasks file for update_os
+- name: update RHEL-like
+  include_tasks: rhel.yaml
+  when: ansible_os_family == "RedHat"
+
+- name: update Arch
+  include_tasks: arch.yaml
+  when: ansible_os_family == "Archlinux"
+
+- name: update Debian-like
+  include_tasks: debian.yaml
+  when: ansible_os_family == "Debian"

@@ -1,0 +1,17 @@
+php_module:
+  - libapache2-mod-php
+  - php-bcmath
+  - php-curl
+  - php-dev
+  - php-gd      
+  - php-intl
+  - php-mbstring
+  - php-mysql
+  - php-soap
+  - php-xml
+  - php-zip
+
+db_name: joomla_db
+db_user: joomla_user
+
+joomla_version: 5-2-3

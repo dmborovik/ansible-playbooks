@@ -1,0 +1,49 @@
+---
+- name: Deploy Joomla 
+  hosts: all
+  become: True
+  roles:
+    - update_os
+    - apache
+    - { role: php, php_modules: "{{ php_module }}" } 
+    - { role: mariadb, secure_install: False, create_db: True, create_user: True, }
+
+  tasks:
+
+    - name: Download Joomla
+      get_url:
+        url: "https://downloads.joomla.org/cms/joomla5/{{ joomla_version }}/Joomla_{{ joomla_version }}-Stable-Full_Package.zip"
+        dest: "/tmp/joomla.zip"
+      register: download
+
+    - name: Make dir for joomla
+      file:
+        path: /var/www/html/joomla
+        state: directory
+        owner: www-data
+        group: www-data
+
+    - name: Unzip Joomla
+      unarchive:
+        src: /tmp/joomla.zip
+        dest: /var/www/html/joomla
+        remote_src: yes
+        owner: www-data
+        group: www-data
+      # when: download.changed
+
+    - name: Activate Virtual Host Joomla
+      shell: a2ensite joomla.conf
+      when: ansible_os_family == "Debian" and download.changed
+
+    - name: Config Apache for Joomla
+      template: 
+        src: joomla.conf
+        dest: /etc/apache2/sites-available/joomla.conf
+      notify: Restart apache
+
+  handlers:
+    - name: Restart apache
+      service:
+        name: apache2
+        state: restarted
