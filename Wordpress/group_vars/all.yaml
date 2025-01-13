@@ -1,5 +1,12 @@
+mysql_module_php: |-
+  {%- if ansible_os_family == "RedHat" -%}
+  mysqlnd
+  {%- elif ansible_os_family == "Debian" -%}
+  mysql
+  {%- endif -%}
+
 lsphp_module:
-  - mysql
+  - "{{ mysql_module_php }}"
   - common
   - curl
   - imagick
@@ -7,6 +14,10 @@ lsphp_module:
 work_dir: /usr/local/lsws/Example/html/
 
 server_owner: nobody
-server_group: nogroup
-
+server_group: |-
+  {%- if ansible_os_family == "RedHat" -%}
+  nobody
+  {%- elif ansible_os_family == "Debian" -%}
+  nogroup
+  {%- endif -%}
 multisite: True

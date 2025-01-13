@@ -36,7 +36,7 @@
             owner: "{{ server_owner }}"
             group: "{{ server_group }}"
       
-      # when: download is changed
+      when: download is changed
 
 ########Config OpenLiteSpeed########    
     - name: Set OpenLiteSpeed

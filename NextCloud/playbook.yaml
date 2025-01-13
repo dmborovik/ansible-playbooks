@@ -48,7 +48,7 @@
             owner: apache
             group: apache
 
-      when: download.changed
+      # when: download.changed
 
     - name: Config Apache for NextCloud
       template:
