@@ -20,17 +20,17 @@
       file:
         path: /var/www/html/joomla
         state: directory
-        owner: www-data
-        group: www-data
+        owner: "{{ owner_apache }}"
+        group: "{{ owner_apache }}"
 
     - name: Unzip Joomla
       unarchive:
         src: /tmp/joomla.zip
         dest: /var/www/html/joomla
         remote_src: yes
-        owner: www-data
-        group: www-data
-      # when: download.changed
+        owner: "{{ owner_apache }}"
+        group: "{{ owner_apache }}"
+      when: download.changed
 
     - name: Activate Virtual Host Joomla
       shell: a2ensite joomla.conf
@@ -39,11 +39,11 @@
     - name: Config Apache for Joomla
       template: 
         src: joomla.conf
-        dest: /etc/apache2/sites-available/joomla.conf
+        dest: "{{ work_dir_apache }}"
       notify: Restart apache
 
   handlers:
     - name: Restart apache
       service:
-        name: apache2
+        name: "{{ apache_service }}"
         state: restarted

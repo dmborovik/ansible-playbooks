@@ -1,17 +1,44 @@
-php_module:
-  - libapache2-mod-php
+excep_php_module: |-
+  {%- if ansible_os_family == "Debian" -%}
+  libapache2-mod-php,php-dev
+  {%- endif -%}
+
+php_module: 
   - php-bcmath
   - php-curl
-  - php-dev
-  - php-gd      
+  - php-gd
   - php-intl
   - php-mbstring
   - php-mysql
   - php-soap
   - php-xml
   - php-zip
+  - "{{ excep_php_module }}"
+ 
 
 db_name: joomla_db
 db_user: joomla_user
 
 joomla_version: 5-2-3
+
+
+owner_apache: |-
+  {%- if ansible_os_family == "Debian" -%}
+  www-data
+  {%- elif ansible_os_family == "RedHat" -%}
+  apache
+  {%- endif -%}
+
+apache_service: |-
+  {%- if ansible_os_family == "Debian" -%}
+  apache2
+  {%- elif ansible_os_family == "RedHat" -%}
+  httpd
+  {%- endif -%}
+
+work_dir_apache: |-
+  {%- if ansible_os_family == "Debian" -%}
+  /etc/apache2/sites-available/joomla.conf
+  {%- elif ansible_os_family == "RedHat" -%}
+  /etc/httpd/conf.d/joomla.conf
+  {%- endif -%}
