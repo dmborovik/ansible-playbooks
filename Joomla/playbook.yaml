@@ -42,6 +42,36 @@
         dest: "{{ work_dir_apache }}"
       notify: Restart apache
 
+    - name: Secure install for RHEL-like
+      block:
+
+        - name: Open port in firewalld
+          firewalld:
+            service: http
+            state: enabled
+            permanent: True
+          register: firewall
+
+        - name: Reload firewall
+          service:
+            name: firewalld
+            state: reloaded
+          when: firewall is changed
+        
+        - name: Disable SELinux
+          selinux:
+            state: disabled
+          register: selinux
+        
+        - name: Reboot host
+          reboot:
+            msg: "Reboot for apply SELinux settings"
+            connect_timeout: 5
+            reboot_timeout: 300
+          when: selinux is changed
+
+      when: ansible_os_family == "RedHat"
+
   handlers:
     - name: Restart apache
       service:
