@@ -6,8 +6,10 @@ update_os
 Требования
 ------------
 
-- Almalinux 9
-- ArchLinux
+- **Almalinux:** 8|9
+- **ArchLinux**
+- **CentOS Stream:** 9
+- **Ubuntu:** 22|24
 
 Пример плэйбука
 ----------------

@@ -4,8 +4,10 @@
 Требования
 ------------
 
-- Almalinux 8/9
-- Arch
+- **Almalinux**: 8|9
+- **Arch**
+- **CentOS Stream:** 9
+- **Ubuntu**: 22
 
 Переменные
 --------------
