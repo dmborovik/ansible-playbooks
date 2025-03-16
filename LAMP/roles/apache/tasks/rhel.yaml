@@ -8,3 +8,31 @@
     name: httpd
     state: started
     enabled: true
+
+- name: Check Apache version
+  command: httpd -v
+  register: apache_version
+  changed_when: false
+
+- name: Display Apache version
+  debug:
+    msg: "{{ apache_version.stdout }}"
+
+- name: Ensure Apache is running
+  block:
+    - name: Start Apache service
+      service:
+        name: httpd
+        state: started
+        enabled: true
+  rescue:
+    - name: Notify about Apache service failure
+      debug:
+        msg: "Failed to start Apache service. Please check logs."
+
+- name: Allow HTTP traffic
+  firewalld:
+    service: http
+    state: enabled
+    permanent: true
+    immediate: true

@@ -2,10 +2,30 @@
   apt:
     name: apache2
     state: present
-    update_cache: True
 
 - name: Start Apache service
   service:
     name: apache2
     state: started
     enabled: true
+
+- name: Check Apache version
+  command: apache2 -v
+  register: apache_version
+  changed_when: false
+
+- name: Display Apache version 
+  debug:
+    msg: "{{ apache_version.stdout }}"
+
+- name: Ensure Apache is running
+  block:
+    - name: Start Apache service
+      service:
+        name: apache2
+        state: started
+        enabled: true
+  rescue:
+    - name: Notify about Apache service failure
+      debug:
+        msg: "Failed to start Apache service. Please check logs."

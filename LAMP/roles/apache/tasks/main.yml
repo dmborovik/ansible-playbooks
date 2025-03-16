@@ -2,12 +2,23 @@
 # tasks file for apache
 - name: Deploy apache on RHEL
   include_tasks: rhel.yaml
-  when: ansible_os_family == "RedHat"  
+  when: ansible_os_family == "RedHat"
+  tags: rhel
 
 - name: Deploy apache on Arch
   include_tasks: arch.yaml
   when: ansible_os_family == "Archlinux"
+  tags: arch
 
 - name: Deploy apache on Debian/Ubuntu
   include_tasks: debian.yaml
   when: ansible_os_family == "Debian"
+  tags: debian
+
+- name: Fail if OS family is not supported
+  fail:
+    msg: "Unsupported OS family: {{ ansible_os_family }}"
+  when: >
+    ansible_os_family != "RedHat" and
+    ansible_os_family != "ArchLinux" and
+    ansible_os_family != "Debian"

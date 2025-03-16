@@ -10,3 +10,12 @@
     state: present
   with_items: "{{ php_modules }}"
   when: php_modules is defined
+
+- name: Check PHP version
+  command: php --version
+  register: php_version
+  changed_when: false
+
+- name: Display PHP version
+  debug:
+    msg: "{{ php_version.stdout }}"

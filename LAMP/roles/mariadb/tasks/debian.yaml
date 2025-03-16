@@ -2,10 +2,35 @@
   apt:
     name: mariadb-server
     state: present
-    update_cache: True
 
 - name: Install extension
   apt:
     name: python3-pymysql
     state: present
-    update_cache: True
+
+- name: Start and enable MariaDB service
+  service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Check MariaDB version
+  command: mariadb --version
+  register: mariadb_version
+  changed_when: false
+
+- name: Display MariaDB version
+  debug:
+    msg: "{{ mariadb_version.stdout }}"
+
+- name: Ensure MariaDB is running
+  block:
+    - name: Start and enable MariaDB service
+      service:
+        name: mariadb
+        state: started
+        enabled: true
+  rescue:
+    - name: Notify about MariaDB service failure
+      debug:
+        msg: "Failed to start MariaDB service. Please check logs."

@@ -3,7 +3,7 @@
   hosts: all
   become: True
   roles:
-    - update_os
-    - apache
-    - { role: mariadb, version_MariaDB: 11.5 }
-    - { role: php, php_version: 8.4 }
+    - { role: update_os, tags: ['update'] }                       #Обновление ОС
+    - { role: apache, tags: ['apache'] }                          #Установка Apache
+    - { role: mariadb, version_MariaDB: 11.5, tags: ['mariadb'] } #Установка MariaDB
+    - { role: php, php_version: 8.4, tags: ['php'] }              #Установка PHP

@@ -12,3 +12,30 @@
 - name: Init data dir
   shell: "mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql"
   
+- name: Check if data directory is initialized
+  stat:
+    path: /var/lib/mysql/mysql
+  register: mysql_data_dir
+
+- name: Fail if data directory is not initialized
+  fail:
+    msg: "MariaDB data directory is not initialized."
+  when: not mysql_data_dir.stat.exists
+
+- name: Start and enable MariaDB service
+  service:
+    name: mysqld
+    state: started
+    enabled: true
+
+- name: Ensure MariaDB is running
+  block:
+    - name: Start and enable MariaDB service
+      service:
+        name: mysqld
+        state: started
+        enabled: true
+  rescue:
+    - name: Notify about MariaDB service failure
+      debug:
+        msg: "Failed to start MariaDB service. Please check logs."
