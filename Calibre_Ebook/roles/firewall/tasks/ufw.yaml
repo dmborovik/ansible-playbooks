@@ -1,0 +1,16 @@
+- name: Allow services
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+  with_items: "{{ services }}"
+  when: services is defined
+
+- name: Allow ports
+  ufw:
+    rule: allow
+    port: "{{ ports }}"
+    proto: tcp
+  with_items: "{{ ports }}"
+  when: ports is defined
+
+  

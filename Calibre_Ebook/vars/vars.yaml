@@ -1,0 +1,28 @@
+## Firewall rules ##
+firewall_ports: 8080
+firewall_services: 
+  - http
+  - https
+
+## Needed dependencies ##
+depended: 
+  - wget
+  - python3
+  - libfontconfig
+  - libegl1
+  - libopengl0
+  - libxcb-cursor0
+  - libxkbcommon0
+  - libgl1
+  - libglx0
+  - libxcomposite1
+  - libxdamage1
+  - libxrandr2
+  - libxtst6
+  - libasound2
+  - libxkbfile1
+
+## Settings for Calibre ##
+calibre_user: calibre
+calibre_library_path: "/home/{{ calibre_user }}/calibre_library"
+calibre_service: calibre-server

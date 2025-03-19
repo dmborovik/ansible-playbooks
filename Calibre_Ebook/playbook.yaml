@@ -1,0 +1,75 @@
+- name: Deploy Calibre Ebook server
+  hosts: all
+  become: true
+  vars_files:
+    - vars/vars.yaml
+  roles:
+    - {role: firewall, ports: "{{ firewall_ports }}", services: "{{ firewall_services}}" }
+    - {role: install_depend, packages: "{{ depended }}"}
+
+  tasks: 
+
+    - name: Check if Calibre is installed
+      command: calibre --version
+      register: calibre_check
+      ignore_errors: yes
+      changed_when: false
+    
+    - name: Install Calibre
+      block:
+
+        - name: Download Calibre installer
+          get_url:
+            url: https://download.calibre-ebook.com/linux-installer.sh
+            dest: /tmp/calibre-installer.sh
+            mode: '0755'
+
+        - name: Install Calibre
+          command: sh /tmp/calibre-installer.sh
+
+      when: calibre_check.rc != 0
+    
+    - name: Create calibre user
+      user:
+        name: "{{ calibre_user }}"
+        system: yes
+        createhome: yes
+
+    - name: Create Calibre Library Directory
+      file:
+        path: "{{ calibre_library_path }}"
+        state: directory
+        owner: "{{ calibre_user }}"
+        group: "{{ calibre_user }}"
+        mode: "0755"
+
+    - name: Ensure Calibre Library exists
+      command: calibredb list
+      args:
+        chdir: "{{ calibre_library_path }}"
+      register: calibre_library_check
+      ignore_errors: yes
+      changed_when: false
+
+    - name: Initialize Calibre Library if missing
+      file:
+        path: "{{ calibre_library_path }}/metadata.db"
+        state: touch
+        owner: "{{ calibre_user }}"
+        group: "{{ calibre_user }}"
+        mode: "0644"
+      when: calibre_library_check.rc != 0
+
+    - name: Create systemd service file
+      template:
+        src: calibre.service.j2
+        dest: "/etc/systemd/system/{{ calibre_service }}.service"
+      notify: Reload calibre
+  
+  handlers:
+    - name: Reload calibre
+      systemd:
+        daemon_reload: yes
+        name: "{{ calibre_service }}"
+        enabled: yes
+        state: restarted    

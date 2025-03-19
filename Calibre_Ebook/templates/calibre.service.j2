@@ -1,0 +1,13 @@
+[Unit]
+Description=Calibre Server
+After=network.target
+
+[Service]
+Type=simple
+User={{ calibre_user }}
+Group={{ calibre_user }}
+ExecStart=/opt/calibre/calibre-server {{ calibre_library_path }} --enable-local-write
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
