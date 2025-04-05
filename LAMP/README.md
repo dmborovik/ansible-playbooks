@@ -15,9 +15,10 @@ LAMP Stack Deployment
 
 Роли поддерживают следующие операционные системы:
 
-- **Almalinux:** `8`|`9`
+- **Almalinux:**      `8`|`9`
 - **Arch**
-- **CentOS Stream:** `9`|`10`
+- **CentOS Stream:**  `9`
+- **Debian:**         `12`
 
 Требования
 ----------
@@ -90,3 +91,5 @@ LAMP Stack Deployment
     - apache
     - php
 ```
+
+Update 01.04.2025: php версии 8.3 и 8.4 пока не доступна в репозитории Debian 12.

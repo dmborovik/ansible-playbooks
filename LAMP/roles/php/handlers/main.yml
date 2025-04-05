@@ -1,2 +1,6 @@
 ---
 # handlers file for php
+- name: Restart web server
+  service:
+    name: "{{ web_server_service | default('apache2') }}"
+    state: restarted

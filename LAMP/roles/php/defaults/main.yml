@@ -1,3 +1,10 @@
 ---
 # defaults file for php
-php_version: 8.4
+# Версия PHP (можно оставить пустым для установки версии по умолчанию)
+php_version: ""
+
+# Модули PHP для установки
+php_modules: []
+
+# Имя веб-сервера для перезагрузки
+web_server_service: "apache2"

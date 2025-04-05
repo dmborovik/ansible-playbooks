@@ -1,21 +1,25 @@
 - name: Install PHP on Debian/Ubuntu
   apt:
-    name: php
+    name: "php{{ php_version | default('') }}"
     state: present
     update_cache: yes
+  notify: Restart web server
 
 - name: Install PHP-modules
   apt:
-    name: "{{ item }}"
+    name: "{{ php_modules }}"
     state: present
-  with_items: "{{ php_modules }}"
-  when: php_modules is defined
+  when: 
+    - php_modules is defined
+    - php_modules | length > 0
+  notify: Restart web server
 
 - name: Check PHP version
-  command: php --version
-  register: php_version
+  command: php -v
+  register: php_ver_check
   changed_when: false
+  ignore_errors: yes
 
 - name: Display PHP version
   debug:
-    msg: "{{ php_version.stdout }}"
+    msg: "PHP version: {{ php_ver_check.stdout_lines | first }}"
