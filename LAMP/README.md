@@ -19,6 +19,7 @@ LAMP Stack Deployment
 - **Arch**
 - **CentOS Stream:**  `9`
 - **Debian:**         `12`
+- **Ubuntu:**         `20.04`
 
 Требования
 ----------
