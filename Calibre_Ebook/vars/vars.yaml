@@ -1,26 +1,31 @@
 ## Firewall rules ##
-firewall_ports: 8080
+firewall_ports: 
+  - 8080/tcp
 firewall_services: 
   - http
   - https
 
 ## Needed dependencies ##
-depended: 
-  - wget
-  - python3
-  - libfontconfig
-  - libegl1
-  - libopengl0
-  - libxcb-cursor0
-  - libxkbcommon0
-  - libgl1
-  - libglx0
-  - libxcomposite1
-  - libxdamage1
-  - libxrandr2
-  - libxtst6
-  - libasound2
-  - libxkbfile1
+depended:
+  common:
+    - wget
+  debian:
+    - python3
+    - libfontconfig
+    - libegl1
+    - libopengl0
+    - libxcb-cursor0
+    - libxkbcommon0
+    - libgl1
+    - libglx0
+    - libxcomposite1
+    - libxdamage1
+    - libxrandr2
+    - libxtst6
+    - libasound2
+    - libxkbfile1
+  redhat:
+    - python36
 
 ## Settings for Calibre ##
 calibre_user: calibre

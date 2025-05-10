@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User={{ calibre_user }}
 Group={{ calibre_user }}
-ExecStart=/opt/calibre/calibre-server {{ calibre_library_path }} --enable-local-write
+ExecStart=/opt/calibre/calibre-server "{{ calibre_library_path }}" --enable-local-write --listen-on=0.0.0.0 --port=8080
 Restart=always
 
 [Install]

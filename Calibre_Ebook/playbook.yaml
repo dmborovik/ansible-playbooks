@@ -51,20 +51,18 @@
       ignore_errors: yes
       changed_when: false
 
-    - name: Initialize Calibre Library if missing
-      file:
-        path: "{{ calibre_library_path }}/metadata.db"
-        state: touch
-        owner: "{{ calibre_user }}"
-        group: "{{ calibre_user }}"
-        mode: "0644"
-      when: calibre_library_check.rc != 0
-
     - name: Create systemd service file
       template:
         src: calibre.service.j2
         dest: "/etc/systemd/system/{{ calibre_service }}.service"
       notify: Reload calibre
+
+    - name: Clean up Calibre installer
+      file:
+        path: /tmp/calibre-installer.sh
+        state: absent
+      when: calibre_check.rc != 0 # Удаляем только если устанавливали
+
   
   handlers:
     - name: Reload calibre
