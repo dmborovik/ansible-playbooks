@@ -1,4 +1,4 @@
-excep_php_module: |-
+php_modules_debian: |-
   {%- if ansible_os_family == "Debian" -%}
   libapache2-mod-php,php-dev
   {%- endif -%}
@@ -13,7 +13,7 @@ php_module:
   - php-soap
   - php-xml
   - php-zip
-  - "{{ excep_php_module }}"
+  - "{{ php_modules_debian }}"
  
 
 db_name: joomla_db
