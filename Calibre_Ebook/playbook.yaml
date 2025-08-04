@@ -4,7 +4,7 @@
   vars_files:
     - vars/vars.yaml
   roles:
-    - {role: firewall, ports: "{{ firewall_ports }}", services: "{{ firewall_services}}" }
+    #- {role: firewall, ports: "{{ firewall_ports }}", services: "{{ firewall_services}}" }
     - {role: install_depend, packages: "{{ depended }}"}
 
   tasks: 

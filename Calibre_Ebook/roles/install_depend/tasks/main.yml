@@ -4,7 +4,7 @@
 - name: Install dependencies on Debian-like
   apt:
     name: 
-      "{{ packages }}"
+      - "{{ packages }}"
     state: present
     update_cache: yes
   when: packages is defined and ansible_os_family == "Debian"
