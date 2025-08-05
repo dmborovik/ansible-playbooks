@@ -4,17 +4,18 @@
   vars_files:
     - vars/vars.yaml
   roles:
-    #- {role: firewall, ports: "{{ firewall_ports }}", services: "{{ firewall_services}}" }
+    - {role: firewall, ports: "{{ firewall_ports }}", services: "{{ firewall_services}}" }
     - {role: install_depend, packages: "{{ depended }}"}
+    - update_os
 
   tasks: 
 
     - name: Check if Calibre is installed
-      command: calibre --version
+      command: /opt/calibre/calibre --version
       register: calibre_check
       ignore_errors: yes
       changed_when: false
-    
+
     - name: Install Calibre
       block:
 
@@ -25,7 +26,7 @@
             mode: '0755'
 
         - name: Install Calibre
-          command: sh /tmp/calibre-installer.sh
+          shell: "sh /tmp/calibre-installer.sh version={{ calibre_version }}"
 
       when: calibre_check.rc != 0
     
@@ -37,6 +38,15 @@
 
     - name: Create Calibre Library Directory
       file:
+        path: "{{ calibre_library_path }}"
+        state: directory
+        owner: "{{ calibre_user }}"
+        group: "{{ calibre_user }}"
+        mode: "0755"
+
+    - name: Create Calibre library meta-file
+      file:
+        name: metadata.db
         path: "{{ calibre_library_path }}"
         state: directory
         owner: "{{ calibre_user }}"

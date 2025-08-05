@@ -1,0 +1,5 @@
+- name: Install required packages (RedHat)
+  dnf:
+    name: "{{ packages.redhat }}"
+    state: present
+    update_cache: yes
