@@ -39,4 +39,4 @@ calibre_library_path: "/home/{{ calibre_user }}/calibre_library"
 calibre_service: calibre-server
 
 # Almalinux 9 need version <= 7.15.0
-calibre_version: 7.15.0 
+calibre_version: 8.13.0 

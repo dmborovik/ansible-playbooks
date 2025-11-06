@@ -46,12 +46,11 @@
 
     - name: Create Calibre library meta-file
       file:
-        name: metadata.db
-        path: "{{ calibre_library_path }}"
-        state: directory
+        path: "{{ calibre_library_path }}/metadata.db"
+        state: touch
         owner: "{{ calibre_user }}"
         group: "{{ calibre_user }}"
-        mode: "0755"
+        mode: "0644"
 
     - name: Ensure Calibre Library exists
       command: calibredb list

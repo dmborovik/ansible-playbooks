@@ -13,3 +13,5 @@
 - [Wordpress](./Wordpress/) - Установка CMS Wordpress
 
 - [Joomla](./Joomla/) - Установка CMS Joomla
+
+- [Calibre_Ebook](./Calibre_Ebook/) - Установка сервера Calibre_ebook
