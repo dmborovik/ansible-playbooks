@@ -1,0 +1,16 @@
+---
+# tasks file for firewall
+
+# Определение какой файрвол используется
+- name: Detect type of firewall 
+  include_tasks: detect_firewall.yaml
+
+# Настройка firewalld
+- name: Configure firewalld
+  include_tasks: firewalld.yaml
+  when: firewall_type == 'firewalld'
+
+# Настройка ufw  
+- name: Configure ufw 
+  include_tasks: ufw.yaml
+  when: firewall_type == 'ufw'

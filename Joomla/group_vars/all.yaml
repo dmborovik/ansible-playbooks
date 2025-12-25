@@ -19,7 +19,8 @@ php_module:
 db_name: joomla_db
 db_user: joomla_user
 
-joomla_version: 5-2-3
+joomla_major_version: 6
+joomla_minor_version: 0-1
 
 
 owner_apache: |-
@@ -42,3 +43,6 @@ work_dir_apache: |-
   {%- elif ansible_os_family == "RedHat" -%}
   /etc/httpd/conf.d/joomla.conf
   {%- endif -%}
+
+firewall_service:
+ - http

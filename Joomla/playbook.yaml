@@ -7,12 +7,13 @@
     - apache
     - { role: php, php_modules: "{{ php_module }}" } 
     - { role: mariadb, secure_install: False, create_db: True, create_user: True, }
+    - { role: firewall, firewall_service: "{{ firewall_service }}",}
 
   tasks:
 
     - name: Download Joomla
       get_url:
-        url: "https://downloads.joomla.org/cms/joomla5/{{ joomla_version }}/Joomla_{{ joomla_version }}-Stable-Full_Package.zip"
+        url: "https://downloads.joomla.org/cms/joomla{{ joomla_major_version }}/{{ joomla_major_version }}-{{ joomla_minor_version }}/Joomla_{{ joomla_major_version }}-{{ joomla_minor_version }}-Stable-Full_Package.zip"
         dest: "/tmp/joomla.zip"
       register: download
 
@@ -44,20 +45,7 @@
 
     - name: Secure install for RHEL-like
       block:
-
-        - name: Open port in firewalld
-          firewalld:
-            service: http
-            state: enabled
-            permanent: True
-          register: firewall
-
-        - name: Reload firewall
-          service:
-            name: firewalld
-            state: reloaded
-          when: firewall is changed
-        
+             
         - name: Disable SELinux
           selinux:
             state: disabled
